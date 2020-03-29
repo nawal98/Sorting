@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>Sorting Test</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    </head>
+    <body>
+        <section id="input">
+            <form name="form1" action="index.html">
+                <table>
+                    <tr>
+                        <td align="center">UserID</td>
+                        <td align="center">User Name</td>
+                        <td align="center">User Occupation</td>
+                    </tr>
+                    <tr>
+                        <td>  <input type="number" id="userID" name="userID" value="1" readonly ></td>            
+                        <td><input type="text" id="name" name="name" placeholder="UserName"></td>
+                        <td> <input type="text" id="occupation" name="occupation" placeholder="UserOccupation"></td>
+                        <td>  <button type="button" value="Add" id="button" onclick="addone()" >Add</button></td>  
+                    </tr>
+                </table><br><br>
+            </form>
+
+            Sort by: <select name="sort" id ="sortBy">
+                <option value ="userID">userID</option>
+                <option value ="name">userName</option>
+                <option value ="occupation">userOccupation</option>
+            </select>
+
+            <br>         
+
+            <table id="table" border="1">
+                <tr>
+                    <th>User ID</th>
+                    <th>User Name</th>
+                    <th>User Occupation</th>
+                </tr>
+                <section id="output"></section>
+            </table>
+
+            <script>
+
+                let counter = 1;
+                let data = [];
+                var rIndex,
+                        table = document.getElementById("table");
+                function addone() {
+
+
+                    var empty = document.forms["form1"][ "name"].value;
+                    var empt = document.forms["form1"][ "occupation"].value;
+                    if (empty === "" && empt === "")
+                    {
+                        alert("Please input name and occupation");
+                        return false;
+                    } else if (empty === "")
+                    {
+                        alert("Please input a name");
+                        return false;
+                    } else if (empt === "")
+                    {
+                        alert("Please input an occupation");
+                        return false;
+                    } else
+                    {
+                        alert('User is submitted!');
+
+                    }
+
+
+                }
+                function AddDetails() {
+                    var button = document.getElementById("button");
+                    button.addEventListener("click", SaveDetails, false);
+                    let sortBy = document.getElementById("sortBy");
+                    sortBy.addEventListener("change", SortAndDisplay, false);
+                    document.getElementById("userID").value = counter;
+                }
+                function SortAndDisplay() {
+                    console.log("Sorting", document.getElementById("sortBy").value);
+                    let sortBy = document.getElementById("sortBy").value;
+                    if (sortBy === "userID") {
+                        data.sort(function (a, b) {
+                            return a.id - b.id;
+                        });
+                    } else {
+                        sortByNameOrOccupation(sortBy);
+                    }
+                    console.log(data);
+                    displayAfterSort();
+                }
+                function SaveDetails() {
+                    let name = document.getElementById("name");
+                    let occupation = document.getElementById("occupation");
+                    data.push({id: counter, name: name.value, occupation: occupation.value});
+                    console.log(data);
+                    counter++;
+                    document.getElementById("userID").value = counter;
+                    name.value = "";
+                    occupation.value = "";
+
+                    let outputSection = document.getElementById("output");
+                    let outputData = data[data.length - 1];
+                    let newP = document.createElement("p");
+                    newP.textContent =
+                            newRow = table.insertRow(table.length),
+                            cell1 = newRow.insertCell(0),
+                            cell2 = newRow.insertCell(1),
+                            cell3 = newRow.insertCell(2),
+                            document.getElementById('userID').value;
+                    cell1.innerHTML = outputData["id"];
+                    cell2.innerHTML = outputData["name"];
+                    cell3.innerHTML = outputData["occupation"];
+                    // call the function to set the event to the new row
+                    selectedRowToInput();
+                    outputSection.appendChild(newP);
+
+                }
+
+                function sortByNameOrOccupation(attribute) {
+                    data.sort(function (a, b) {
+                        var nameA = a[attribute].toUpperCase(); // ignore upper and lowercase
+                        var nameB = b[attribute].toUpperCase(); // ignore upper and lowercase
+                        if (nameA < nameB) {
+                            return -1;
+                        }
+                        if (nameA > nameB) {
+                            return 1;
+                        }
+
+                        // names must be equal
+                        return 0;
+                    });
+                }
+
+                function displayAfterSort() {
+                    let outputSection = document.getElementById("output");
+                    outputSection.innerHTML = "";
+//                    let fragment = document.createDocumentFragment();
+                    data.forEach(function (d) {
+                        let p = document.createElement("p");
+                        p.textContent =
+                                newRow = table.insertRow(table.length),
+                                cell1 = newRow.insertCell(0),
+                                cell2 = newRow.insertCell(1),
+                                cell3 = newRow.insertCell(2),
+                                document.getElementById('userID').value;
+                        cell1.innerHTML = d["id"];
+                        cell2.innerHTML = d["name"];
+                        cell3.innerHTML = d["occupation"];
+            
+                        outputSection.appendChild(p);
+
+                    });
+//                    outputSection.appendChild(fragment);
+
+                }
+
+                window.addEventListener("load", AddDetails, false);
+
+
+            </script>
+        </section>
+    </body>
+</html>
